@@ -55,9 +55,9 @@ void *InlineHooker(void *address, void *replacement) {
         return nullptr;
     }
 
-    void *origin_call;
-    if (DobbyHook(address, replacement, &origin_call) == RS_SUCCESS) {
-        return origin_call;
+    dobby_dummy_func_t origin_call = nullptr;
+    if (DobbyHook(address, reinterpret_cast<dobby_dummy_func_t>(replacement), &origin_call) == RS_SUCCESS) {
+        return reinterpret_cast<void *>(origin_call);
     } else {
         return nullptr;
     }

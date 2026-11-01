@@ -12,7 +12,7 @@ jobs:
         uses: actions/checkout@master
       - name: Checkout native dependencies
         run: |
-          git submodule update --init core/src/main/cpp/xz core/src/main/cpp/lsplant
+          git submodule update --init core/src/main/cpp/xz core/src/main/cpp/lsplant core/src/main/cpp/dobby
           git -C core/src/main/cpp/lsplant submodule update --init --recursive lsplant/src/main/jni/external/dex_builder
 
       - name: Setup JDK 17
@@ -31,18 +31,10 @@ jobs:
           version: 1.12.0
 
       - name: Build
-        run: ./gradlew :core:publishToMavenLocal :core:assembleDebugAndroidTest :example:assembleDebug
+        run: ./gradlew :core:publishToMavenLocal
 
       - name: Upload AAR
         uses: actions/upload-artifact@v4
         with:
           name: Aliuhook-api37
           path: core/build/outputs/aar/core-release.aar
-
-      - name: Upload test APKs
-        uses: actions/upload-artifact@v4
-        with:
-          name: Aliuhook-test-apks
-          path: |
-            core/build/outputs/apk/androidTest/debug/*.apk
-            example/build/outputs/apk/debug/*.apk

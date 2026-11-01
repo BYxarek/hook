@@ -4,3 +4,6 @@
 [submodule "core/src/main/cpp/lsplant"]
 	path = core/src/main/cpp/lsplant
 	url = https://github.com/LSPosed/LSPlant.git
+[submodule "core/src/main/cpp/dobby"]
+	path = core/src/main/cpp/dobby
+	url = https://github.com/BYxarek/Dobby.git

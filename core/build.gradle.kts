@@ -22,7 +22,6 @@ plugins {
 
 dependencies {
     compileOnly("org.lsposed.libcxx:libcxx-full:30.0.16248370")
-    implementation("io.github.vvb2060.ndk:dobby:1.2")
 
     androidTestImplementation("androidx.test.ext:junit:1.2.1")
     androidTestImplementation("androidx.test:runner:1.6.2")
@@ -127,7 +126,7 @@ afterEvaluate {
             register(project.name, MavenPublication::class.java) {
                 group = "com.aliucord"
                 artifactId = "Aliuhook"
-                version = "1.1.4-api37.1"
+                version = "1.1.4-api37.2"
 
                 from(components["release"])
             }

@@ -6,6 +6,13 @@ LSPlant is built from source at commit
 [`06bd341`](https://github.com/LSPosed/LSPlant/commit/06bd3412d639d6b0d76fe6c7388066fe44e8963d)
 and linked statically into `libaliuhook.so`.
 
+Dobby is built statically from the pinned `core/src/main/cpp/dobby` submodule
+at BYxarek/Dobby `c53ab0bc8014092e160f9a9269d6057abf6aaa7f`, based on
+LSPosed/Dobby `c1da0315d7a2069bde2ab432e45d4ab6df91237a` (upstream master
+checked 2026-11-01). It preserves occupied memory mappings, including ART
+PROT_NONE reservations. The Maven `dobby:1.2` dependency is no longer used.
+AliuHook adapts its inline hook callback to Dobby's function-pointer API.
+
 `core/src/main/cpp/lsplant_backup_id.cmake` patches a build-directory copy of
 LSPlant to retain each backup's original JNI ID for unhooking. It avoids resolving
 an ID from an already modified backup and fails configuration if upstream changes
@@ -43,7 +50,7 @@ Android SDK are required). Install CMake `4.1.2` with the SDK Manager
 Gradle installs NDK `30.0.16248370` if needed.
 
 ```sh
-git submodule update --init core/src/main/cpp/xz core/src/main/cpp/lsplant
+git submodule update --init core/src/main/cpp/xz core/src/main/cpp/lsplant core/src/main/cpp/dobby
 git -C core/src/main/cpp/lsplant submodule update --init --recursive lsplant/src/main/jni/external/dex_builder
 ./gradlew :core:publishToMavenLocal
 ```
@@ -62,7 +69,7 @@ repositories {
 }
 
 dependencies {
-    implementation "com.aliucord:Aliuhook:1.1.4-api37.1"
+    implementation "com.aliucord:Aliuhook:1.1.4-api37.2"
 }
 ```
 

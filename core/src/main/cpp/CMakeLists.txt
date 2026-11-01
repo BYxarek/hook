@@ -22,8 +22,10 @@ add_library(aliuhook SHARED
 )
 
 set(LSPLANT_BUILD_SHARED OFF CACHE BOOL "" FORCE)
+set(CMAKE_POLICY_VERSION_MINIMUM 3.5)
+set(DOBBY_GENERATE_SHARED OFF CACHE BOOL "" FORCE)
+add_subdirectory(dobby)
 add_subdirectory(lsplant/lsplant/src/main/jni)
 include(lsplant_backup_id.cmake)
-find_package(dobby REQUIRED CONFIG)
 
-target_link_libraries(aliuhook log lsplant_static dobby::dobby)
+target_link_libraries(aliuhook log lsplant_static dobby)
