@@ -3,8 +3,13 @@
 Java Xposed Api for [LSPlant](https://github.com/LSPosed/LSPlant)
 
 LSPlant is built from source at commit
-[`6ac2280`](https://github.com/LSPosed/LSPlant/commit/6ac2280d8d88e14f0864c26ac97c1dc96713bde1)
+[`06bd341`](https://github.com/LSPosed/LSPlant/commit/06bd3412d639d6b0d76fe6c7388066fe44e8963d)
 and linked statically into `libaliuhook.so`.
+
+`core/src/main/cpp/lsplant_backup_id.cmake` patches a build-directory copy of
+LSPlant to retain each backup's original JNI ID for unhooking. It avoids resolving
+an ID from an already modified backup and fails configuration if upstream changes
+invalidate the patch. Remove this patch when upstream retains the ID itself.
 
 Please note that this is only a partial implementation of Xposed, since we only need method hooking.
 Thus, only XposedBridge and hook classes are implemented. If you need the rest, just copy paste it

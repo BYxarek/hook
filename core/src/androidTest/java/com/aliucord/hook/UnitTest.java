@@ -74,6 +74,38 @@ public class UnitTest {
     }
 
     @Test
+    public void shouldRehookAndInvokeOriginal() throws Throwable {
+        var method = UnitTest.class.getDeclaredMethod("add", int.class, int.class);
+        for (int i = 0; i < 10; i++) {
+            var unhook = XposedBridge.hookMethod(method, XC_MethodReplacement.returnConstant(42));
+            try {
+                assertTrue(XposedBridge.isHooked(method));
+                assertEquals(42, method.invoke(null, 2, 3));
+                assertEquals(5, XposedBridge.invokeOriginalMethod(method, null, new Object[]{2, 3}));
+            } finally {
+                unhook.unhook();
+            }
+            assertFalse(XposedBridge.isHooked(method));
+            assertEquals(5, method.invoke(null, 2, 3));
+        }
+    }
+
+    @Test
+    public void shouldRestoreInternalJniMethod() throws Throwable {
+        var getClassLoader = Class.class.getDeclaredMethod("getClassLoader");
+        for (int i = 0; i < 3; i++) {
+            var unhook = XposedBridge.hookMethod(getClassLoader, new XC_MethodHook() {});
+            try {
+                shouldRehookAndInvokeOriginal();
+            } finally {
+                unhook.unhook();
+            }
+            // LSPlant must restore its cached getClassLoader ID before the next Hook.
+            shouldRehookAndInvokeOriginal();
+        }
+    }
+
+    @Test
     @SuppressWarnings("ConstantConditions")
     public void shouldHookNative() throws Throwable {
         var method = UnitTest.class.getDeclaredMethod("shouldHookNative");
